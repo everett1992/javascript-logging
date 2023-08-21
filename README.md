@@ -52,20 +52,18 @@ Browsers may support filtering the console's level, but server side runtimes lik
 
 ## Front end api
 
-### Getting a log instance
-> TODO how do you get a logger?
-
 ### Writing logs
 
 ```typescript
 log.info`hello ${name}`;
 ```
+Logging with a tagged template supports readable log calls while supporing structured logging. A console backend may convert the template arguments to strings, but a database backend could save the template and values seperately. 
 
 This could be logged as a normal string template `hello everett1992` or structured logging
 could preserve the template and args.
 
-> Unfortunatly we can't get the variable names so we cannot record `{name: 'everett1992'}` best we can do is
-> `{ message: "hello {}", ["everett1992"]}`. This would be harder to search the log index for logs for a given name.
+> Unfortunatly we can't get the source code from replacements so we cannot record `{name: 'everett1992'}` best we can do is
+> `{ message: "hello {}", ["everett1992"]}`. This would be hard to search the log index for a given name while excluding other attributes.
 >
 > We could recommend `hello ${{name}}` but that's unusual.
 >
@@ -74,8 +72,11 @@ could preserve the template and args.
 > log.info({name})`hello ${"name"}`
 > ``````
 
-Logging with a tagged template supports readable log calls while supporing structured logging. A console backend may convert the template arguments to strings, but a database backend could save the template and values seperately. 
 
+### Getting a log instance
+> TODO how do you get a logger?
+
+### Context and child loggers
 ```typescript
 using child = log.child({ a: 'property' })
 
